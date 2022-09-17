@@ -54,8 +54,8 @@ public class ReviewService {
     }
 
     
-    public CarPoolRuleListResponse getDriverReviewList(final String reviewTargetId ) {
-        return CarPoolRuleListResponse.of(reviewRepository.findByReviewTargetId(reviewTargetId));
+    public CarPoolRoleListResponse getDriverReviewList(final String reviewTargetId, final String carPoolrole ) {
+        return CarPoolRoleListResponse.of(reviewRepository.getReviewScoreAvgbyReviewTargetId(reviewTargetId,carPoolrole));
     }
 
     @Transactional

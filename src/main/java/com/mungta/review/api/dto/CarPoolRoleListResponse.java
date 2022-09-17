@@ -15,16 +15,16 @@ import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor
-public class CarPoolRuleListResponse {
+public class CarPoolRoleListResponse {
     @Schema(description = "리뷰 리스트")
     private List<ReviewInfoResponse> reviews;
 
-    public static CarPoolRuleListResponse of(List<Review> reviewList) {
+    public static CarPoolRoleListResponse of(List<Review> reviewList) {
         List<ReviewInfoResponse> reviewResponseList = reviewList.stream()
                 .map(ReviewInfoResponse::of)
                 .collect(Collectors.toList());
 
-        return new CarPoolRuleListResponse(reviewResponseList);
+        return new CarPoolRoleListResponse(reviewResponseList);
     }
 
     @EqualsAndHashCode
@@ -54,6 +54,7 @@ public class CarPoolRuleListResponse {
         private String modifiedDateTime;
 
         public static ReviewInfoResponse of(Review review) {
+            
             return ReviewInfoResponse.builder()
                     .id(review.getId())
                     .partyId(review.getPartyInfo().getPartyId())

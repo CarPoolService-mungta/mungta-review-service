@@ -5,7 +5,7 @@ import com.mungta.review.api.dto.ReviewRequest;
 import com.mungta.review.api.dto.ReviewResponse;
 import com.mungta.review.service.ReviewService;
 import com.mungta.review.api.dto.ReviewListResponse;
-import com.mungta.review.api.dto.CarPoolRuleListResponse;
+import com.mungta.review.api.dto.CarPoolRoleListResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -67,11 +67,11 @@ public class ReviewController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "리뷰 내역 조회 성공",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CarPoolRuleListResponse.class))})
+                            schema = @Schema(implementation = CarPoolRoleListResponse.class))})
     })
     @GetMapping("/driver-review")
-    public ResponseEntity<CarPoolRuleListResponse> getDriverReviewList(@RequestParam String reviewTargetId) {
-        CarPoolRuleListResponse response = reviewService.getDriverReviewList(reviewTargetId);
+    public ResponseEntity<CarPoolRoleListResponse> getDriverReviewList(@RequestParam String reviewTargetId,@RequestParam String carPoolrole) {
+        CarPoolRoleListResponse response = reviewService.getDriverReviewList(reviewTargetId,carPoolrole);
         return ResponseEntity.ok(response);
     }
 

@@ -12,6 +12,11 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.mungta.review.domain.repository.ReviewRepository;
+
+import java.util.List;
+import javax.transaction.Transactional;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -21,7 +26,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 public class Review {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+
+
+      @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(name = "REVIEWER_ID", nullable = false)
@@ -60,4 +67,12 @@ public class Review {
     public void modifyReviewContents(ReviewContents reviewContents) {
         this.reviewContents = reviewContents;
     }
+/* 
+    public void ReviewScoreAvg(String reviewTargetId){
+
+             
+        List<Review> result = reviewRepository.getReviewScoreAvgbyReviewTargetId(reviewTargetId);
+        
+
+    } */
 }
