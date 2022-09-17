@@ -1,7 +1,6 @@
 package com.mungta.review.api.dto;
 
 import com.mungta.review.domain.Review;
-import com.mungta.review.domain.ReviewScore;
 import com.mungta.review.domain.ReviewStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -39,7 +38,7 @@ public class CarPoolRoleListResponse {
         private long partyId;
 
         @Schema(description = "리뷰 점수")
-        private ReviewScore reviewScore;
+        private long reviewScore;
 
         @Schema(description = "리뷰 내용")
         private String comment;

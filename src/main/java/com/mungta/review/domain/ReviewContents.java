@@ -10,8 +10,7 @@ import javax.persistence.*;
 public class ReviewContents {
 
     @Column(name = "REVIEW_SCORE", nullable = false)
-    @Enumerated(EnumType.ORDINAL)
-    private ReviewScore reviewScore;
+    private Long reviewScore;
    
     @Column(name = "COMMENT", nullable = false)
     private String comment;

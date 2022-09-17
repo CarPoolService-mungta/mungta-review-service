@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
-import com.mungta.review.domain.ReviewScore;
-
 @Getter
 @Builder
 @AllArgsConstructor
@@ -16,7 +14,7 @@ import com.mungta.review.domain.ReviewScore;
 public class ReviewContentsRequest {
 
     @NotBlank
-    private ReviewScore reviewScore;
+    private long reviewScore;
 
     private String comment;
 
