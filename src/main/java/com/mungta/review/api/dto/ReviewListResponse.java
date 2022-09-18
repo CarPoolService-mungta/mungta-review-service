@@ -32,10 +32,13 @@ public class ReviewListResponse {
     @Builder
     public static class ReviewInfoResponse {
 
-        @Schema(description = "리뷰 ID")
+        @Schema(description = "리뷰ID")
         private long id;
+        
+        @Schema(description = "리뷰대상ID")
+        private String reviewTargetId;
 
-        @Schema(description = "파티 ID")
+        @Schema(description = "파티ID")
         private long partyId;
 
         @Schema(description = "리뷰 점수")
@@ -53,11 +56,16 @@ public class ReviewListResponse {
         @Schema(description = "리뷰수정 시간")
         private String modifiedDateTime;
 
+        @Schema(description = "리뷰ID")
+        private long reviewScoreAvg;
+
         public static ReviewInfoResponse of(Review review) {
             return ReviewInfoResponse.builder()
                     .id(review.getId())
+                    .reviewTargetId(review.getReviewTargetId())
                     .partyId(review.getPartyInfo().getPartyId())
                     .reviewScore(review.getReviewContents().getReviewScore())
+                    .reviewScoreAvg(review.getReviewScoreAvg())
                     .comment(review.getReviewContents().getComment())
                     .reviewStatus(review.getReviewStatus())
                     .createdDateTime(

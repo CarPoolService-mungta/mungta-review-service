@@ -14,6 +14,6 @@ public class ReviewContents {
    
     @Column(name = "COMMENT", nullable = false)
     private String comment;
-
+   
 
 }

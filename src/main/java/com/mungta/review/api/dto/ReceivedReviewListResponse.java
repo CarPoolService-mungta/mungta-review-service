@@ -14,16 +14,16 @@ import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor
-public class CarPoolRoleListResponse {
+public class ReceivedReviewListResponse {
     @Schema(description = "리뷰 리스트")
     private List<ReviewInfoResponse> reviews;
 
-    public static CarPoolRoleListResponse of(List<Review> reviewList) {
+    public static ReceivedReviewListResponse of(List<Review> reviewList) {
         List<ReviewInfoResponse> reviewResponseList = reviewList.stream()
                 .map(ReviewInfoResponse::of)
                 .collect(Collectors.toList());
 
-        return new CarPoolRoleListResponse(reviewResponseList);
+        return new ReceivedReviewListResponse(reviewResponseList);
     }
 
     @EqualsAndHashCode
@@ -39,6 +39,9 @@ public class CarPoolRoleListResponse {
 
         @Schema(description = "리뷰 점수")
         private long reviewScore;
+
+        @Schema(description = "리뷰 점수")
+        private long reviewScoreAvg;
 
         @Schema(description = "리뷰 내용")
         private String comment;
@@ -58,6 +61,7 @@ public class CarPoolRoleListResponse {
                     .id(review.getId())
                     .partyId(review.getPartyInfo().getPartyId())
                     .reviewScore(review.getReviewContents().getReviewScore())
+                    .reviewScoreAvg(review.getReviewScoreAvg())
                     .comment(review.getReviewContents().getComment())
                     .reviewStatus(review.getReviewStatus())
                     .createdDateTime(

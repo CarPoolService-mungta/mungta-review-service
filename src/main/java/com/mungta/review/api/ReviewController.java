@@ -1,12 +1,8 @@
 package com.mungta.review.api;
 
-import com.mungta.review.api.dto.ReviewContentsRequest;
-import com.mungta.review.api.dto.ReviewRequest;
-import com.mungta.review.api.dto.ReviewResponse;
-import com.mungta.review.service.ReviewService;
-import com.mungta.review.api.dto.ReviewListResponse;
-import com.mungta.review.api.dto.CarPoolRoleListResponse;
+import com.mungta.review.api.dto.*;
 
+import com.mungta.review.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -35,7 +31,7 @@ public class ReviewController {
     @PostMapping
     public ResponseEntity<ReviewResponse> registeredReview(@RequestBody ReviewRequest request) {
         long id = reviewService.registeredReview(request);
-        return ResponseEntity.created(URI.create("/api/review/" + id)).build();
+        return ResponseEntity.created(URI.create("/api/review/list/" + id)).build();
     }
 
     @Operation(summary = "리뷰 수정")
@@ -44,7 +40,7 @@ public class ReviewController {
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ReviewResponse.class))})
     })
-    @PutMapping("/{id}")
+    @PutMapping("/list/{id}")
     public ResponseEntity<ReviewResponse> modifyReview(@Parameter(description = "리뷰 ID") @PathVariable long id,
                                                                @RequestBody ReviewContentsRequest request) {
         ReviewResponse response = reviewService.modifyReviewContents(id, request);
@@ -57,7 +53,7 @@ public class ReviewController {
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ReviewListResponse.class))})
     })
-    @GetMapping("/my-review")
+    @GetMapping("/list/{id}")
     public ResponseEntity<ReviewListResponse> getReviewList(@RequestParam String reviewerId) {
         ReviewListResponse response = reviewService.getReviewList(reviewerId);
         return ResponseEntity.ok(response);
@@ -67,19 +63,20 @@ public class ReviewController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "리뷰 내역 조회 성공",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CarPoolRoleListResponse.class))})
+                            schema = @Schema(implementation = ReceivedReviewListResponse.class))})
     })
-    @GetMapping("/driver-review")
-    public ResponseEntity<CarPoolRoleListResponse> getDriverReviewList(@RequestParam String reviewTargetId,@RequestParam String carPoolrole) {
-        CarPoolRoleListResponse response = reviewService.getDriverReviewList(reviewTargetId,carPoolrole);
+    @GetMapping("/ReceivedReview")
+    public ResponseEntity<ReceivedReviewListResponse> getDriverReviewList(@RequestParam String reviewTargetId,@RequestParam String carPoolrole) {
+        ReceivedReviewListResponse response = reviewService.getDriverReviewList(reviewTargetId,carPoolrole);
         return ResponseEntity.ok(response);
     }
+
 
     @Operation(summary = "리뷰 삭제")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "리뷰 삭제 성공")
     })
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/list/{id}")
     public ResponseEntity<ReviewResponse> deleteReview(@Parameter(description = "리뷰 ID") @PathVariable long id) {
         reviewService.deleteReview(id);
         return ResponseEntity.noContent().build();

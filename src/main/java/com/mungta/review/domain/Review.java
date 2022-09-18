@@ -28,13 +28,13 @@ public class Review {
 
 
 
-      @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(name = "REVIEWER_ID", nullable = false)
     private String reviewerId;
 
-    @Column(name = "REVIEWER_TARGET_ID", nullable = false)
+    @Column(name = "REVIEW_TARGET_ID", nullable = false)
     private String reviewTargetId;
 
     @Embedded
@@ -42,6 +42,9 @@ public class Review {
 
     @Embedded
     private ReviewContents reviewContents;
+
+    @Column(name = "REVIEW_SCORE_AVG", nullable = false)
+    private long reviewScoreAvg ;
 
     @Column(name = "REVIEW_STATUS", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -55,24 +58,19 @@ public class Review {
     @Column(name = "MODIFIED_DATE_TIME")
     private LocalDateTime modifiedDateTime;
 
+
     @Builder
-    public Review(String reviewerId, String reviewTargetId, PartyInfo partyInfo, ReviewContents reviewContents) {
+    public Review(String reviewerId, String reviewTargetId, PartyInfo partyInfo, ReviewContents reviewContents, long reviewScoreAvg) {
         this.reviewerId = reviewerId;
         this.reviewTargetId = reviewTargetId;
         this.partyInfo =partyInfo;
         this.reviewContents = reviewContents;
+        this.reviewScoreAvg = reviewScoreAvg;
         this.reviewStatus = ReviewStatus.REGISTERED;
     }
 
     public void modifyReviewContents(ReviewContents reviewContents) {
         this.reviewContents = reviewContents;
     }
-/* 
-    public void ReviewScoreAvg(String reviewTargetId){
 
-             
-        List<Review> result = reviewRepository.getReviewScoreAvgbyReviewTargetId(reviewTargetId);
-        
-
-    } */
 }

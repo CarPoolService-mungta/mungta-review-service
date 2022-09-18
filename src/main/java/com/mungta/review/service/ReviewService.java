@@ -21,6 +21,8 @@ public class ReviewService {
     @Transactional
     public long registeredReview(final ReviewRequest request) {
         PartyInfoRequest partyInfo = request.getPartyInfo();
+ /* 
+        reviewRepository.getReviewScoreAvg(request.getReviewTargetId()); */
 
         return reviewRepository.save(
                 Review.builder()
@@ -38,10 +40,11 @@ public class ReviewService {
                         )
                         .reviewContents(
                                 new ReviewContents(request.getReviewContents().getReviewScore(),
-                                        request.getReviewContents().getComment())
+                                                     request.getReviewContents().getComment())
                         )
                         .build()
         ).getId();
+        
     }
 
     private Review getReviewById(long id) {
@@ -52,12 +55,13 @@ public class ReviewService {
     public ReviewListResponse getReviewList(final String reviwerId) {
         return ReviewListResponse.of(reviewRepository.findByReviewerId(reviwerId));
     }
-
     
-    public CarPoolRoleListResponse getDriverReviewList(final String reviewTargetId, final String carPoolrole ) {
-        return CarPoolRoleListResponse.of(reviewRepository.getReviewScoreAvgbyReviewTargetId(reviewTargetId,carPoolrole));
+    public ReceivedReviewListResponse getDriverReviewList(final String reviewTargetId, final String carPoolrole ) {
+        reviewRepository.getReviewScoreAvg(reviewTargetId);
+        return ReceivedReviewListResponse.of(reviewRepository.findByReviewTargetIdAndCarPoolRole(reviewTargetId,carPoolrole));
     }
 
+ 
     @Transactional
     public ReviewResponse modifyReviewContents(final long id, final ReviewContentsRequest request) {
         Review review = getReviewById(id);
