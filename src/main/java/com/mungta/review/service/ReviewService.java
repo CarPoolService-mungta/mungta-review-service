@@ -1,14 +1,19 @@
 package com.mungta.review.service;
 
 import com.mungta.review.api.dto.*;
+import com.mungta.review.common.ApiException;
+import com.mungta.review.common.ApiStatus;
 import com.mungta.review.domain.Review;
 import com.mungta.review.domain.ReviewContents;
+import com.mungta.review.domain.Role;
 import com.mungta.review.domain.repository.ReviewRepository;
-import com.mungta.review.domain.PartyInfo;
+import com.mungta.review.domain.repository.ReviewRepositorySupport;
 import com.mungta.review.service.exception.NotFoundReviewException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -18,55 +23,47 @@ public class ReviewService {
 
     private final ReviewRepository reviewRepository;
 
+    private final ReviewRepositorySupport reviewRepositorySupport;
+
     @Transactional
     public long registeredReview(final ReviewRequest request) {
-        PartyInfoRequest partyInfo = request.getPartyInfo();
- /* 
-        reviewRepository.getReviewScoreAvg(request.getReviewTargetId()); */
 
         return reviewRepository.save(
-                Review.builder()
-                        .reviewerId(request.getReviewerId())
-                        .reviewTargetId(request.getReviewTargetId())
-                        .partyInfo(
-                                PartyInfo.builder()
-                                        .partyId(partyInfo.getPartyId())
-                                        .userId(partyInfo.getUserId())
-                                        .userName(partyInfo.getUsername())
-                                        .profileImage(partyInfo.getProfileImage())
-                                        .department(partyInfo.getDepartment())
-                                        .carPoolRole(partyInfo.getCarPoolRole())
-                                        .build()
-                        )
-                        .reviewContents(
-                                new ReviewContents(request.getReviewContents().getReviewScore(),
-                                                     request.getReviewContents().getComment())
-                        )
-                        .build()
+                Review.of(request.getReviewerId(),
+                        request.getReviewTargetId(),
+                        request.getPartyId(),
+                        request.getReviewContents().convertReviewContents(),
+                        request.getReviewerRole(),
+                        request.getTargetRole()
+                )
         ).getId();
         
     }
 
     private Review getReviewById(long id) {
         return reviewRepository.findById(id)
-                .orElseThrow(() -> new NotFoundReviewException("등록되지 않은 리뷰글입니다."));
+                .orElseThrow(() -> new ApiException(ApiStatus.NOT_FOUND_REVIEW));
     }
 
-    public ReviewListResponse getReviewList(final String reviwerId) {
-        return ReviewListResponse.of(reviewRepository.findByReviewerId(reviwerId));
+    public ReviewListResponse getReviewList(final String reviewerId) {
+        return ReviewListResponse.of(reviewRepository.findAllByReviewerId(reviewerId));
     }
     
-    public ReceivedReviewListResponse getDriverReviewList(final String reviewTargetId, final String carPoolrole ) {
-        reviewRepository.getReviewScoreAvg(reviewTargetId);
-        return ReceivedReviewListResponse.of(reviewRepository.findByReviewTargetIdAndCarPoolRole(reviewTargetId,carPoolrole));
+    public ReceivedReviewListResponse getReviewListWithRole(String reviewTargetId, Role role ) {
+        return ReceivedReviewListResponse.of(reviewRepository.findAllByReviewTargetIdAndTargetRole(reviewTargetId, role));
     }
 
+    public List<ReviewSummaryResponse> getReviewSummary(List<String> reviewerId) {
+
+
+        return ReviewSummaryResponse.mergeList(reviewRepositorySupport.getScoreAvg(reviewerId), reviewRepositorySupport.getRecentComment(reviewerId));
+    }
  
     @Transactional
     public ReviewResponse modifyReviewContents(final long id, final ReviewContentsRequest request) {
         Review review = getReviewById(id);
 
-        review.modifyReviewContents(new ReviewContents(request.getReviewScore(), request.getComment()));
+        review.modifyReviewContents(request.convertReviewContents());
         return ReviewResponse.of(review);
     }
 

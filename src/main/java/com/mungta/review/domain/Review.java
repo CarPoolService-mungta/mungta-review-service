@@ -20,12 +20,11 @@ import javax.transaction.Transactional;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@EntityListeners(AuditingEntityListener.class)
+@Builder
 @Table(name = "REVIEW")
-
-public class Review {
-
+public class Review extends BaseEntity{
 
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,37 +36,37 @@ public class Review {
     @Column(name = "REVIEW_TARGET_ID", nullable = false)
     private String reviewTargetId;
 
-    @Embedded
-    private PartyInfo partyInfo;
+    @Column(name = "PARTY_ID", nullable = false)
+    private Long partyId;
+
+    @Enumerated(EnumType.STRING)
+    private Role reviewerRole;
+
+    @Enumerated(EnumType.STRING)
+    private Role targetRole;
 
     @Embedded
     private ReviewContents reviewContents;
-
-    @Column(name = "REVIEW_SCORE_AVG", nullable = false)
-    private long reviewScoreAvg ;
 
     @Column(name = "REVIEW_STATUS", nullable = false)
     @Enumerated(EnumType.STRING)
     private ReviewStatus reviewStatus;
 
-    @CreatedDate
-    @Column(name = "CREATED_DATE_TIME")
-    private LocalDateTime createdDateTime;
+    @Transient
+    private Double scoreAvg;
 
-    @LastModifiedDate
-    @Column(name = "MODIFIED_DATE_TIME")
-    private LocalDateTime modifiedDateTime;
-
-
-    @Builder
-    public Review(String reviewerId, String reviewTargetId, PartyInfo partyInfo, ReviewContents reviewContents, long reviewScoreAvg) {
-        this.reviewerId = reviewerId;
-        this.reviewTargetId = reviewTargetId;
-        this.partyInfo =partyInfo;
-        this.reviewContents = reviewContents;
-        this.reviewScoreAvg = reviewScoreAvg;
-        this.reviewStatus = ReviewStatus.REGISTERED;
+    public static Review of(String reviewerId, String reviewTargetId, Long partyId, ReviewContents reviewContents, Role reviewerRole, Role targetRole){
+        return Review.builder()
+                .reviewerId(reviewerId)
+                .reviewTargetId(reviewTargetId)
+                .partyId(partyId)
+                .reviewContents(reviewContents)
+                .reviewerRole(reviewerRole)
+                .targetRole(targetRole)
+                .reviewStatus(ReviewStatus.REGISTERED)
+                .build();
     }
+
 
     public void modifyReviewContents(ReviewContents reviewContents) {
         this.reviewContents = reviewContents;

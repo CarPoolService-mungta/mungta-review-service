@@ -1,5 +1,6 @@
 package com.mungta.review.api.dto;
 
+import com.mungta.review.domain.ReviewContents;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,5 +18,9 @@ public class ReviewContentsRequest {
     private long reviewScore;
 
     private String comment;
+
+    public ReviewContents convertReviewContents(){
+        return new ReviewContents(reviewScore,comment);
+    }
 
 }

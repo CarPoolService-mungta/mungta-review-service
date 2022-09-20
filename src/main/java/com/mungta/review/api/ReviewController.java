@@ -2,6 +2,9 @@ package com.mungta.review.api;
 
 import com.mungta.review.api.dto.*;
 
+import com.mungta.review.domain.Review;
+import com.mungta.review.domain.Role;
+import com.mungta.review.domain.repository.ReviewRepositorySupport;
 import com.mungta.review.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -15,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @Tag(name = "REVIEW", description = "리뷰 API")
 @RequiredArgsConstructor
@@ -23,6 +27,7 @@ import java.net.URI;
 public class ReviewController {
 
     private final ReviewService reviewService;
+
 
     @Operation(summary = "리뷰 등록", description = "리뷰를 등록한다.")
     @ApiResponses(value = {
@@ -53,7 +58,7 @@ public class ReviewController {
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ReviewListResponse.class))})
     })
-    @GetMapping("/list/{id}")
+    @GetMapping("/list")
     public ResponseEntity<ReviewListResponse> getReviewList(@RequestParam String reviewerId) {
         ReviewListResponse response = reviewService.getReviewList(reviewerId);
         return ResponseEntity.ok(response);
@@ -65,9 +70,9 @@ public class ReviewController {
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ReceivedReviewListResponse.class))})
     })
-    @GetMapping("/ReceivedReview")
-    public ResponseEntity<ReceivedReviewListResponse> getDriverReviewList(@RequestParam String reviewTargetId,@RequestParam String carPoolrole) {
-        ReceivedReviewListResponse response = reviewService.getDriverReviewList(reviewTargetId,carPoolrole);
+    @GetMapping("/received-review")
+    public ResponseEntity<ReceivedReviewListResponse> getDriverReviewList(@RequestParam String reviewTargetId,@RequestParam Role role) {
+        ReceivedReviewListResponse response = reviewService.getReviewListWithRole(reviewTargetId,role);
         return ResponseEntity.ok(response);
     }
 
@@ -80,6 +85,18 @@ public class ReviewController {
     public ResponseEntity<ReviewResponse> deleteReview(@Parameter(description = "리뷰 ID") @PathVariable long id) {
         reviewService.deleteReview(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "회원 리뷰 summary 리스트")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "리뷰 내역 조회 성공",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ReceivedReviewListResponse.class))})
+    })
+    @GetMapping("/summary")
+    public ResponseEntity<List<ReviewSummaryResponse>> getReviewSummary(@RequestParam List<String> userIds) {
+
+        return ResponseEntity.ok(reviewService.getReviewSummary(userIds));
     }
 
 }

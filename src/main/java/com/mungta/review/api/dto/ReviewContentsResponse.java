@@ -15,8 +15,6 @@ public class ReviewContentsResponse {
 
     private String comment;
 
-    private long reviewScoreAvg;
-
     public static ReviewContentsResponse of(ReviewContents reviewContents) {
         return ReviewContentsResponse.builder()
                 .reviewScore(reviewContents.getReviewScore())

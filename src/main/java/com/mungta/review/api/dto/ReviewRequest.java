@@ -1,5 +1,6 @@
 package com.mungta.review.api.dto;
 
+import com.mungta.review.domain.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,8 +16,12 @@ public class ReviewRequest {
 
     private String reviewTargetId;
 
-    private PartyInfoRequest partyInfo;
+    private Long partyId;
 
     private ReviewContentsRequest reviewContents;
+
+    private Role reviewerRole;
+
+    private Role targetRole;
 
 }

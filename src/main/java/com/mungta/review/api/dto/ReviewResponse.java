@@ -15,7 +15,7 @@ public class ReviewResponse {
 
     private String reviewTargetId;
 
-    private PartyInfoResponse partyInfo;
+    private Long partyId;
 
     private ReviewContentsResponse reviewContents;
 
@@ -26,9 +26,7 @@ public class ReviewResponse {
                 .id(review.getId())
                 .reviewerId(review.getReviewerId())
                 .reviewTargetId(review.getReviewTargetId())
-                .partyInfo(
-                        PartyInfoResponse.of(review.getPartyInfo())
-                )
+                .partyId(review.getPartyId())
                 .reviewContents(
                         ReviewContentsResponse.of(review.getReviewContents())
                 )
