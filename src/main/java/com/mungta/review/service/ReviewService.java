@@ -73,4 +73,9 @@ public class ReviewService {
         reviewRepository.deleteById(id);
     }
 
+    public Boolean isReviewed(String userId, String targetId, Long partyId){
+        return reviewRepository.findByReviewerIdAndReviewTargetIdAndPartyId(userId,targetId,partyId)
+                .isPresent();
+
+    }
 }

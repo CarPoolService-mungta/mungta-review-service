@@ -89,14 +89,24 @@ public class ReviewController {
 
     @Operation(summary = "회원 리뷰 summary 리스트")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "리뷰 내역 조회 성공",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ReceivedReviewListResponse.class))})
+            @ApiResponse(responseCode = "200", description = "리뷰 내역 조회 성공")
     })
     @GetMapping("/summary")
     public ResponseEntity<List<ReviewSummaryResponse>> getReviewSummary(@RequestParam List<String> userIds) {
 
         return ResponseEntity.ok(reviewService.getReviewSummary(userIds));
+    }
+
+    @Operation(summary = "이미 리뷰 했는지 체크")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "이미 리뷰 했는지 체크 확인")
+    })
+    @GetMapping("/is-reviewed")
+    public ResponseEntity<Boolean> isReviewed( @RequestHeader("userId") String userId,
+                                               @RequestParam String targetId,
+                                               @RequestParam Long partyId) {
+
+        return ResponseEntity.ok(reviewService.isReviewed(userId, targetId, partyId));
     }
 
 }
