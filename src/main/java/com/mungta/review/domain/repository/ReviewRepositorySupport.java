@@ -1,6 +1,5 @@
 package com.mungta.review.domain.repository;
 
-import com.mungta.review.api.dto.QReviewSummaryResponse;
 import com.mungta.review.api.dto.ReviewSummaryResponse;
 import com.mungta.review.domain.Review;
 import lombok.RequiredArgsConstructor;
