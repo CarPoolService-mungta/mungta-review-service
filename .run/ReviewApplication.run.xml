@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="ReviewApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <option name="ACTIVE_PROFILES" value="dev" />
+    <envs>
+      <env name="DB_HOST" value="review-service-db.mysql.database.azure.com" />
+      <env name="DB_USERNAME" value="mungta" />
+      <env name="DB_PASSWORD" value="andxk12#$" />
+    </envs>
+    <module name="review-domain" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.mungta.review.ReviewApplication" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
