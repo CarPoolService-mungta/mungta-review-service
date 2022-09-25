@@ -71,8 +71,8 @@ public class ReviewController {
                             schema = @Schema(implementation = ReceivedReviewListResponse.class))})
     })
     @GetMapping("/received-review")
-    public ResponseEntity<ReceivedReviewListResponse> getDriverReviewList(@RequestParam String reviewTargetId,@RequestParam Role role) {
-        ReceivedReviewListResponse response = reviewService.getReviewListWithRole(reviewTargetId,role);
+    public ResponseEntity<ReceivedReviewListResponse> getDriverReviewList(@RequestParam String reviewTargetId) {
+        ReceivedReviewListResponse response = reviewService.getUserTargetReview(reviewTargetId);
         return ResponseEntity.ok(response);
     }
 

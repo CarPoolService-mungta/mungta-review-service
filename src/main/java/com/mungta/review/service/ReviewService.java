@@ -53,6 +53,10 @@ public class ReviewService {
         return ReceivedReviewListResponse.of(reviewRepository.findAllByReviewTargetIdAndTargetRole(reviewTargetId, role));
     }
 
+
+    public ReceivedReviewListResponse getUserTargetReview(String reviewTargetId) {
+        return ReceivedReviewListResponse.of(reviewRepository.findByReviewTargetId(reviewTargetId));
+    }
     public List<ReviewSummaryResponse> getReviewSummary(List<String> reviewerId) {
 
 

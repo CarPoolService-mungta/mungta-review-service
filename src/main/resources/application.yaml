@@ -8,7 +8,9 @@ server:
 #    operationsSorter: method
 
 spring:
-  profiles: default
+  config:
+    activate:
+      on-profile: local
   datasource:
     jdbc-url: jdbc:mysql://review-service-db.mysql.database.azure.com:3306/review_dev?serverTimezone=Asia/Seoul&validationQuery="select 1"
     username: mungta
