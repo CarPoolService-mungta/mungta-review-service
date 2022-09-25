@@ -59,10 +59,14 @@ spring:
 #          contentType: application/json
 
 logging:
+  config: classpath:logging/logback-mungta.xml
   level:
-    org.hibernate.type: trace
-    org.springframework.cloud: debug
-    com.example.accusation: debug
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql: TRACE
 
 api:
   url:

@@ -71,7 +71,11 @@ api:
     party: http://gateway:8080/api/party-management/partyInfos/carpool-summary-info
 
 logging:
+  config: classpath:logging/logback-mungta.xml
   level:
-    org.hibernate.type: trace
-    org.springframework.cloud: debug
-    com.mungta.review: debug
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql: TRACE
